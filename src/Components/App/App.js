@@ -8,6 +8,7 @@ const searchResult1 = {name: 'Tiny Dancer1', artist: 'Elton John', album: 'Madma
 const searchResult2 = {name: 'Tiny Dancer2', artist: 'Elton John', album: 'Madman Across The Water', id: 2};
 const searchResult3 = {name: 'Tiny Dancer3', artist: 'Elton John', album: 'Madman Across The Water', id: 3};
 const searchResults = [searchResult1, searchResult2, searchResult3];
+
 const playlistName = 'New play list';
 const playlistTrack = {name: 'See You Again(feat. Charlie Puth)', artist: 'Wiz Khalifa', album: 'See You Again (feat. Charlie Puth)', id: 123};
 const playlistTracks = [playlistTrack, playlistTrack, playlistTrack];
@@ -15,7 +16,9 @@ const playlistTracks = [playlistTrack, playlistTrack, playlistTrack];
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {searchResults: searchResults};
+    this.state = {searchResults: searchResults,
+                  playlistName: playlistName,
+                  playlistTracks: playlistTracks};
   }
 
   render() {
