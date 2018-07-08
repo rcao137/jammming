@@ -10,8 +10,10 @@ const searchResult3 = {name: 'Tiny Dancer3', artist: 'Elton John', album: 'Madma
 const searchResults = [searchResult1, searchResult2, searchResult3];
 
 const playlistName = 'New play list';
-const playlistTrack = {name: 'See You Again(feat. Charlie Puth)', artist: 'Wiz Khalifa', album: 'See You Again (feat. Charlie Puth)', id: 123};
-const playlistTracks = [playlistTrack, playlistTrack, playlistTrack];
+const playlistTrack1 = {name: 'See You Again(feat. Charlie Puth)-1', artist: 'Wiz Khalifa', album: 'See You Again (feat. Charlie Puth)', id: 100};
+const playlistTrack2 = {name: 'See You Again(feat. Charlie Puth)-2', artist: 'Wiz Khalifa', album: 'See You Again (feat. Charlie Puth)', id: 101};
+const playlistTrack3 = {name: 'See You Again(feat. Charlie Puth)-3', artist: 'Wiz Khalifa', album: 'See You Again (feat. Charlie Puth)', id: 102};
+const playlistTracks = [playlistTrack1, playlistTrack2, playlistTrack3];
 
 class App extends React.Component {
   constructor(props) {
@@ -19,6 +21,32 @@ class App extends React.Component {
     this.state = {searchResults: searchResults,
                   playlistName: playlistName,
                   playlistTracks: playlistTracks};
+    this.addTrack = this.addTrack.bind(this);
+    this.removeTrack = this.removeTrack.bind(this);
+  }
+
+  addTrack(track) {
+    // Need to check foreach instead of find later
+    let alreadyExist = false;
+    this.state.playlistTracks.find(playlistTrack =>{
+      if (playlistTrack.id === track.id) {
+        alreadyExist = true;
+        return;
+      }
+    })
+    if (!alreadyExist) {
+      const newPlaylistTracks = this.state.playlistTracks.push(track);
+      this.setState(playlistTracks: newPlaylistTracks);
+    }
+  }
+
+  removeTrack(track) {
+    let newPlaylistTracks = this.state.playlistTracks;
+    let pos =  newPlaylistTracks.indexOf(track);
+    if (pos >-1) {
+      newPlaylistTracks.splice(pos, 1);
+    }
+    this.setState(playlistTracks: newPlaylistTracks);
   }
 
   render() {
@@ -28,8 +56,8 @@ class App extends React.Component {
         <div className="App">
           <SearchBar />
           <div className="App-playlist">
-          <SearchResults searchResults={this.state.searchResults} />
-          <Playlist playlistname={playlistName} playlistTracks={playlistTracks}/>
+          <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack}/>
+          <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} onRemove={this.removeTrack}/>
           </div>
         </div>
       </div>

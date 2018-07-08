@@ -5,15 +5,10 @@ import TrackList from '../TrackList/TrackList';
 class SearchResults extends React.Component {
 
   render() {
-    console.log('Track passed into TrackList.js:' + this.props.searchResults);
-    this.props.searchResults.map(track =>{
-         console.log(track.name)
-       })
-
     return (
       <div className="SearchResults">
         <h2>Results</h2>
-        <TrackList tracks={this.props.searchResults} />
+        <TrackList tracks={this.props.searchResults} onAdd={this.props.onAdd} isRemoval={false}/>
       </div>);
   }
 }
