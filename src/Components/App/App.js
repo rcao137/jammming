@@ -8,7 +8,7 @@ import Spotify from '../util/Spotify';
 const searchResult1 = {name: 'Tiny Dancer1', artist: 'Elton John', album: 'Madman Across The Water', id: 1};
 const searchResult2 = {name: 'Tiny Dancer2', artist: 'Elton John', album: 'Madman Across The Water', id: 2};
 const searchResult3 = {name: 'Tiny Dancer3', artist: 'Elton John', album: 'Madman Across The Water', id: 3};
-const searchResults = [searchResult1, searchResult2, searchResult3];
+const searchResults = [];
 
 const playlistName = 'New play list';
 const playlistTrack1 = {name: 'See You Again(feat. Charlie Puth)-1', artist: 'Wiz Khalifa', album: 'See You Again (feat. Charlie Puth)', id: 100};
@@ -58,7 +58,7 @@ class App extends React.Component {
   }
 
   savePlaylist() {
-    let talkURIs = this.state.playlistTracks.map(playlistTrack =>{
+    this.state.playlistTracks.map(playlistTrack =>{
       return ('http://local:3000/'+playlistTrack.name);
     })
 
@@ -66,8 +66,9 @@ class App extends React.Component {
 
   search(term) {
     console.log(term);
-    const searchResults = Spotify.search(term);
-    this.setState({searchResults: {searchResults}});
+    Spotify.search(term).then(tracks =>{
+      this.setState({searchResults: tracks});
+    });
   }
 
   render() {

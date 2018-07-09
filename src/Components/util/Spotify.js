@@ -17,8 +17,7 @@ const Spotify = {
         return accessToken;
       }
       else {
-        let url = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
-        window.location = url;
+        window.location = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
       }
     }
   },
