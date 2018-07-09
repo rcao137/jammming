@@ -3,6 +3,7 @@ import './App.css';
 import SearchBar from '../SearchBar/SearchBar';
 import SearchResults from '../SearchResults/SearchResults';
 import Playlist from '../Playlist/Playlist';
+import Spotify from '../util/Spotify';
 
 const searchResult1 = {name: 'Tiny Dancer1', artist: 'Elton John', album: 'Madman Across The Water', id: 1};
 const searchResult2 = {name: 'Tiny Dancer2', artist: 'Elton John', album: 'Madman Across The Water', id: 2};
@@ -65,6 +66,8 @@ class App extends React.Component {
 
   search(term) {
     console.log(term);
+    const searchResults = Spotify.search(term);
+    this.setState({searchResults: {searchResults}});
   }
 
   render() {
