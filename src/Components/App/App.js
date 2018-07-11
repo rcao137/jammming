@@ -3,8 +3,9 @@ import './App.css';
 import SearchBar from '../SearchBar/SearchBar';
 import SearchResults from '../SearchResults/SearchResults';
 import Playlist from '../Playlist/Playlist';
-import Spotify from '../util/Spotify';
+import Spotify from '../../util/Spotify';
 
+/*
 const searchResults1 = {name: 'song1', artist: 'artist1', album: 'album1', id: 1};
 const searchResults2 = {name: 'song2', artist: 'artist2', album: 'album2', id: 2};
 const searchResults3 = {name: 'song3', artist: 'artist3', album: 'album1', id: 3};
@@ -15,7 +16,7 @@ const playlistTrack1 = {name: 'See You Again(feat. Charlie Puth)-1', artist: 'Wi
 const playlistTrack2 = {name: 'See You Again(feat. Charlie Puth)-2', artist: 'Wiz Khalifa', album: 'See You Again (feat. Charlie Puth)', id: 101};
 const playlistTrack3 = {name: 'See You Again(feat. Charlie Puth)-3', artist: 'Wiz Khalifa', album: 'See You Again (feat. Charlie Puth)', id: 102};
 const playlistTracks = [playlistTrack1, playlistTrack2, playlistTrack3];
-
+*/
 
 class App extends React.Component {
   constructor(props) {
@@ -26,12 +27,12 @@ class App extends React.Component {
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
-    this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
+    this.savePlaylist = this.savePlaylist.bind(this);
   }
 
   addTrack(track) {
-    // Need to check foreach instead of find later
+    // check if the track has already added to the playlist
     let alreadyExist = false;
     this.state.playlistTracks.find(playlistTrack =>{
       if (playlistTrack.id === track.id) {
@@ -40,7 +41,7 @@ class App extends React.Component {
       }
     })
     if (!alreadyExist) {
-      // Has to assign it to another var, this.state can not be modified using push
+      // Has to assign it to another var, this.state.playlistTracks can not be modified using push
       const newPlaylistTracks = this.state.playlistTracks;
       newPlaylistTracks.push(track);
       this.setState({playlistTracks: newPlaylistTracks});
@@ -49,8 +50,10 @@ class App extends React.Component {
 
   removeTrack(track) {
     let newPlaylistTracks = this.state.playlistTracks;
+    // find the index of the track to be removed
     let pos =  newPlaylistTracks.indexOf(track);
     if (pos >-1) {
+      // remove 1 track at the identified location
       newPlaylistTracks.splice(pos, 1);
     }
     this.setState({playlistTracks: newPlaylistTracks});
@@ -61,11 +64,12 @@ class App extends React.Component {
   }
 
   savePlaylist(playlistName) {
+    // get all URIs from the current playlist tracks
     const trackURIs = this.state.playlistTracks.map(track => track.uri);
+    // create and save a playlist
     Spotify.saveplaylist(this.state.playlistName, trackURIs);
-    // reset playlist back to new
-    this.setState({playlistName: 'New Play List'});
-    this.setState({playlistTracks: []});
+    // reset playlist back to new and empty
+    this.setState({playlistTracks: [], playlistName: 'New Play List'});
   }
 
   search(term) {
