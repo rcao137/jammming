@@ -72,10 +72,41 @@ class App extends React.Component {
     this.setState({playlistTracks: [], playlistName: 'New Play List'});
   }
 
+
+
   search(term) {
-   Spotify.search(term).then(tracks =>{
-      this.setState({searchResults: tracks});
-    });
+    console.log(this.state);
+  // add a new feature to filter out the search result by tracks in playlist
+/*  let resulttracks = Spotify.search(term).then(filteredtracks=>{
+    this.setState({searchResults: filteredtracks})});
+*/
+    let resulttracks = Spotify.search(term).then(tracks=>{
+      let filteredtracks = tracks.filter(function(track) {
+        debugger
+        if (this.state.playlistTracks == undefined || this.state.playlistTracks.length < 1) {
+//        if ((!Array.isArray(this.state.playlistTracks) || !this.state.playlistTracks.length) ) {
+          return true;
+        }
+        else {
+          if (this.state.playlistTracks.length === 0) {
+            return true;
+          }
+          else {
+            if (!this.state.playlistTracks.includes(track)) {
+              return true;
+            }
+            else {
+              return false;
+            }
+          }
+        }
+      }
+    )
+    return filteredtracks;
+    }).then(filteredtracks=>{
+      this.setState({searchResults: filteredtracks})});
+
+
   }
 
   render() {

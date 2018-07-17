@@ -1,6 +1,7 @@
 let accessToken;
 const clientID = '132f3979b8e5486f95c498a645f3a7d9';
-const redirectURI = 'http://playlist-rc.surge.sh/';
+// const redirectURI = 'http://playlist-rc.surge.sh/';
+const redirectURI = 'http://localhost:3000/';
 
 const Spotify = {
   getAccessToken() {
@@ -37,7 +38,10 @@ const Spotify = {
       }
     }).then(jsonResponse => {
         // get tracks from item list
-        if (jsonResponse.tracks.items) {
+        if (!jsonResponse.tracks.items){
+          return [];
+        }
+        else {
           return jsonResponse.tracks.items.map(track => ({
           id: track.id,
           name: track.name,
@@ -45,9 +49,6 @@ const Spotify = {
           album: track.album.name,
           uri: track.uri
           }));
-        } else {
-          // no track returned
-          return [];
         }
     });
   },
