@@ -38,20 +38,20 @@ class App extends React.Component {
     this.savePlaylist = this.savePlaylist.bind(this);
   }
 
-
   // method to find tracks from spotify based on search criteria
   search(term) {
-    // set the search result back to both search result and filter result(by tracks existing in playlist)
+    // set the search result back to both search result and filtered result(filtered by tracks existing in playlist)
     let resulttracks = Spotify.search(term).then(unfilteredtracks=>{
       this.setState({searchResults: unfilteredtracks});
       // if playlist exists, remove the tracks in playlist from searchresult
       debugger
       let playlist = this.state.playlistTracks;
       if (playlist.length >0) {
-        let newfilteredResults = unfilteredtracks.filter(searchResult =>{
-            let x = playlist.indexOf(searchResult);
-            return !(x >-1)
-//            return !(playlist.findIndex(track => track===searchResult) >-1);
+        let newfilteredResults = unfilteredtracks.filter(searchResult => {
+          // return !(playlist.indexOf(searchResult) >-1); IndexOf does not work here
+          // filter out tracks exist inside playlist by comparing id
+          let x = playlist.filter(track => track.id === searchResult.id);
+          return (x.length == 0)
         });
         this.setState({filteredResults: newfilteredResults});
       } else {
@@ -60,7 +60,7 @@ class App extends React.Component {
     });
   }
 
-// method to pick track from search result and add it to playlist
+// method to pick a track from search result and add it to playlist
   addTrack(track) {
     // check if the track has already been added to the playlist, if added, then do not add it again.
     // But with the enhanced feature, this case will not happen in reality, because once the track
@@ -80,7 +80,10 @@ class App extends React.Component {
       this.setState({playlistTracks: newPlaylistTracks});
       // Only add the track to filtered search result if it does not exist in the playlist
       let newfilteredResults = this.state.searchResults.filter(searchResult =>{
-          return !(this.state.playlistTracks.findIndex(track=> track===searchResult) >-1);
+//        return !(this.state.playlistTracks.indexOf(searchResult) >-1);
+        // filter out tracks inside playlist by comparing id, 2 loops may not be time efficient
+        let x = this.state.playlistTracks.filter(track => track.id === searchResult.id);
+        return (x.length == 0)
       });
       this.setState({filteredResults: newfilteredResults});
     }
@@ -101,7 +104,9 @@ class App extends React.Component {
     // refilter the search result by the modified playlist, the removed track may or may not be added
     // back to the search result
     let newfilteredResults = this.state.searchResults.filter(searchResult =>{
-      return !(this.state.playlistTracks.findIndex(track=> track===searchResult) >-1)
+//      return !(this.state.playlistTracks.indexOf(searchResult) >-1)
+      let x = this.state.playlistTracks.filter(track => track.id === searchResult.id);
+      return (x.length == 0)
     });
     this.setState({filteredResults: newfilteredResults});
   }
@@ -111,7 +116,7 @@ class App extends React.Component {
     this.setState({playlistName: name});
   }
 
-// method to save playlsit to spotify
+// method to save playlist to spotify
   savePlaylist(playlistName) {
     // get all URIs from the current playlist tracks
     const trackURIs = this.state.playlistTracks.map(track => track.uri);
@@ -128,7 +133,7 @@ class App extends React.Component {
 
 // render main page with searchbar, search result list and playlist
 // pass in callbacks for search
-// pass in callbacks onAdd for search result
+// pass in callbacks onAdd for search result component
 // pass in callbacks onRemove, on playlist name change and on playlist save to playlist Component
   render() {
     return (
