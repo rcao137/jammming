@@ -2,6 +2,8 @@ import React from 'react';
 import './SearchResults.css';
 import TrackList from '../TrackList/TrackList';
 
+// class to display search results with passed in prop for onAdd callback, tracks on searchresult can
+// not be removed
 class SearchResults extends React.Component {
 
   render() {

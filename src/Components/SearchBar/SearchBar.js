@@ -1,6 +1,7 @@
 import React from 'react';
 import './SearchBar.css'
 
+// Class for song search, initially set search term to be empty  
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
@@ -10,20 +11,25 @@ class SearchBar extends React.Component {
     this.handleEnter = this.handleEnter.bind(this);
   }
 
+//callback on search button click
   search() {
     this.props.onSearch(this.state.term);
   }
 
+// callback on search field value change
   handleTermChange(e) {
     this.setState({term: e.target.value});
   }
 
+// feature enhancement to trigge search by return button click
   handleEnter(e) {
     if (e.keyCode === 13) {
-      this.props.onSearch(this.state.term);// Trigger the button element with a click
+      // perform same method as search button click
+      this.props.onSearch(this.state.term);
     }
   }
 
+// Render Search Bar
   render() {
     return (
       <div className="SearchBar">
