@@ -1,7 +1,7 @@
 import React from 'react';
 import './SearchBar.css'
 
-// Class for song search, initially set search term to be empty  
+// Class for song search, initially set search term to be empty
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +13,9 @@ class SearchBar extends React.Component {
 
 //callback on search button click
   search() {
-    this.props.onSearch(this.state.term);
+    if (this.state.term !='') {
+      this.props.onSearch(this.state.term);
+    }
   }
 
 // callback on search field value change

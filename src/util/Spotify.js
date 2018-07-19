@@ -37,11 +37,14 @@ const Spotify = {
       }
     }).then(response => {
       // check if the response is successful for the API call
+      debugger
       if (response.ok) {
         return response.json();
       }
+      throw new Error('Request failed!');
     }).then(jsonResponse => {
         // get tracks from item list
+        debugger
         if (!jsonResponse.tracks.items){
           // if nothing is returned, return an empty array
           return [];
